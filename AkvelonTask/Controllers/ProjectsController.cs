@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +10,7 @@ using AkvelonTask.Models;
 
 namespace AkvelonTask.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class ProjectsController : ControllerBase
+    public class ProjectsController : Controller
     {
         private readonly ProjectContext _context;
 
@@ -22,49 +19,42 @@ namespace AkvelonTask.Controllers
             _context = context;
         }
 
-        [HttpGet]
         // GET: Projects
-        public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
+        public async Task<IActionResult> Index()
         {
-            List<Project> projects = await _context.Projects.ToListAsync();
-            foreach(Project p in projects)
-            {
-                p.Tasks = await _context.Tasks.Where(t => t.Project.Id == t.Id).ToListAsync();
-            }
-            Response.Headers.Add("Content-Range", projects.Count().ToString());
-            return projects;
+            return View(await _context.Projects.ToListAsync());
         }
 
-        //[HttpGet]
-        //// GET: Projects/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Projects/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var project = await _context.Projects
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (project == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var project = await _context.Projects
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (project == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(project);
-        //}
+            return View(project);
+        }
 
         // GET: Projects/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         // POST: Projects/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateProject([Bind("Id,Name,StartDate,EndDate,Status,Priority")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Status,Priority")] Project project)
         {
             if (ModelState.IsValid)
             {

@@ -56,18 +56,13 @@ namespace AkvelonTask
 
             app.UseAuthorization();
 
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "Projects",
-            //        template: "{controller=Projects}"
-            //    );
-            //});
-
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapRazorPages();
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Projects}/{action=Index}"
+                );
             });
         }
     }
