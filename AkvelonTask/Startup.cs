@@ -27,7 +27,12 @@ namespace AkvelonTask
         {
             services.AddDbContext<ProjectContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
-            services.AddRazorPages();
+            services.AddControllersWithViews();
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Akvelon Task", Version = "v1" });
+            //});
+            //services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,9 +56,18 @@ namespace AkvelonTask
 
             app.UseAuthorization();
 
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "Projects",
+            //        template: "{controller=Projects}"
+            //    );
+            //});
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                //endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
