@@ -11,9 +11,11 @@ namespace AkvelonTask.Models
     {
         [Required]
         public int Id { get; set; }
+        public int ProjectId { get; set; }
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        [EnumDataType(typeof(Enums.TaskStatus))]
         public Enums.TaskStatus Status { get; set; }
         public int Priority { get; set; }
         public virtual Project Project { get; set; }

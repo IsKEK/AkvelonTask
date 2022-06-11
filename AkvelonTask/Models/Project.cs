@@ -16,6 +16,8 @@ namespace AkvelonTask.Models
         [Required]
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        [EnumDataType(typeof(ProjectStatus))]
         public ProjectStatus Status { get; set; }
         public int Priority { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }

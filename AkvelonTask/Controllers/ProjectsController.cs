@@ -34,6 +34,7 @@ namespace AkvelonTask.Controllers
             }
 
             var project = await _context.Projects
+                .Include(t => t.Tasks)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
@@ -50,8 +51,6 @@ namespace AkvelonTask.Controllers
         }
 
         // POST: Projects/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Status,Priority")] Project project)
@@ -82,8 +81,6 @@ namespace AkvelonTask.Controllers
         }
 
         // POST: Projects/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Status,Priority")] Project project)
@@ -143,6 +140,24 @@ namespace AkvelonTask.Controllers
             _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult CreateTask()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTask([Bind("Id,Name,Description,Status,Priority")] Models.Task task)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(task);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(task);
         }
 
         private bool ProjectExists(int id)
