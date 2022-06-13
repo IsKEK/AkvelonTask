@@ -61,7 +61,7 @@ namespace AkvelonTask
                 //endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Projects}/{action=Index}"
+                    pattern: "{controller=Projects}/{action=Index}/{id?}"
                 );
             });
         }

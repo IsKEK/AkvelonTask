@@ -44,6 +44,31 @@
             @Html.DisplayNameFor(model => model.Tasks)
         </dt>
         <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Task Name</th>
+                    <th>Task Description</th>
+                    <th>Task Status</th>
+                    <th>Task Priority</th>
+                </tr>
+                @foreach(var item in Model.Tasks)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Priority)
+                    </td>
+                </tr>
+            }
+            </table>
             @Html.DisplayFor(model => model.Tasks)
         </dd>
     </dl>
